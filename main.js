@@ -3,96 +3,25 @@
 const field_hide_transition_length_s = 0.2;
 const fade_in_medium_length_s = 0.4;
 
-
 const form = document.getElementById('form');
+if(!form) {
+    throw new Error('Cannot find form')
+}
 const form_submitted_element = document.getElementById('form-submitted')
 
-const required_inputs = [];
-
-const conditional_fields = new ConditionalFields();
-
-
+const root_element = /** @type { HTMLElement } */ (document.querySelector(':root'));
 
 //-- Initialization --//
 
-r.style.setProperty('--field-hide-transition-length', field_hide_transition_length_s + 's');
-r.style.setProperty('--fade-in-medium', fade_in_medium_length_s + 's')
+root_element.style.setProperty('--field-hide-transition-length', field_hide_transition_length_s + 's');
+root_element.style.setProperty('--fade-in-medium', fade_in_medium_length_s + 's')
 
-conditional_fields.init({
-    fadeInAnimation: 13
+const conditional_fields = new ConditionalFields({
+    displayValue: 'flex'
 }, );
 
 // Add submit listener to form
 form.addEventListener('submit', handleSubmit);
-
-//-- Functions --//
-
-/**
- * Hide a field with transition
- * @param {HTMLElement} element field to hide
- */
-function hideField(element) {
-    console.log('hiding')
-    element.style.height = "0px";
-    element.style.paddingBlock = "0px";
-
-    const input = element.querySelector('input');
-
-    if (input) input.required = false;
-    
-    setTimeout(() => {
-        element.classList.add('field-hidden');
-    }, field_hide_transition_length_s * 1000 + 20)
-}
-
-/**
- * Show a field with transition
- * @param {HTMLElement} element field to show 
- */
-function showField(element) {
-    console.log('showing')
-    const input = element.querySelector('input');
-
-    if(required_inputs.includes(input)) {
-        input.required = true;
-    }
-
-    element.classList.remove('field-hidden');
-    setTimeout(() => {
-        element.style.paddingBlock = 'var(--field-margin-y)'
-        element.style.height = element.scrollHeight + 'px';
-    }, 20)
-}
-
-
-
-/**
- * Hide field if its dependant field is not filled/checked
- * 
- * @param {HTMLElement} element Element to maybe hide
- * @param {HTMLElement} depends_on Element on which the field's hidden state depends.
- * @param {string} required_value (optional) Which value the depended input needs to have in order to display the element
- */
-function maybeHideField(element, depends_on, required_value) {
-    if(depends_on.getAttribute('type') == 'checkbox') {
-        if(depends_on.checked) {
-            showField(element)
-        } else {
-            hideField(element);
-            // element.classList.add('field-hidden');
-            // element.style.height = '0px';
-            // element.style.display = 'none';
-        }
-    } else if(required_value) {
-        if(depends_on.value == required_value) {
-            showField(element);
-        } else {
-            hideField(element);
-        }
-        
-    }
-}
-
 
 //-- Handlers --//
 
@@ -101,12 +30,18 @@ function maybeHideField(element, depends_on, required_value) {
  * @param {SubmitEvent} e event
  */
 function handleSubmit(e) {
+    if(!form) {
+        throw new Error('Cannot find form');
+    }
+    if(!form_submitted_element) {
+        throw new Error('Cannot find form submitted element');
+    }
     e.preventDefault();
     console.log('submitted');
     form.classList.add('fade-out');
     setTimeout(() => {
         form.style.display = 'none';
-        form_submitted_element.style.display = null;
+        form_submitted_element.style.display = 'flex';
     }, fade_in_medium_length_s * 1000)
     
     

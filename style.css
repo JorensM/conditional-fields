@@ -147,7 +147,7 @@ button[type='submit']:hover {
 
 /*-- Keyframes --*/
 
-.expand {
+.fade-in {
     animation: var(--fade-in-medium) 1 normal fade-in;
     animation-timing-function: ease-in;
 }
@@ -162,7 +162,7 @@ button[type='submit']:hover {
     }
 }
 
-.shrink {
+.fade-out {
     animation: var(--fade-in-medium) 1 normal fade-out;
     animation-timing-function: ease-in;
 }

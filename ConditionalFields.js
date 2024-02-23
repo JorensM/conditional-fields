@@ -12,9 +12,9 @@
  * @type { ConditionalFieldsOptions }
  */
 const default_options = {
-    hideElementAnimation: 'expand',
+    hideElementAnimation: 'fade-out',
     hideElementAnimationDelay: 2 * 1000,
-    showElementAnimation: 'shrink',
+    showElementAnimation: 'fade-in',
     displayValue: 'flex'
 }
 
@@ -36,8 +36,15 @@ class ConditionalFields {
 
     /**
      * @type { NodeListOf<HTMLElement> }
+     * List of elements that depend on other elements
      */
     conditional_elements;
+
+    /**
+     * @type { HTMLElement[] }
+     * List of inputs that are required
+     */
+    required_inputs = [];
     
     /**
      *  @param { ConditionalFieldsOptions } options
@@ -55,18 +62,88 @@ class ConditionalFields {
             const field = this.conditional_elements[i];
             const input = field.querySelector('input');
             if(input && input.required) {
-                required_inputs.push(input);
+                this.required_inputs.push(input);
             }
-            const showIf = field.getAttribute('show-if').split('=');
-            const required_element_id = showIf[0];
-            const required_value = showIf[1];
-            const element_to_check = document.getElementById(required_element_id);
+            const showIfAttribute = field.getAttribute('show-if');
+            if (!showIfAttribute) throw new Error('Cannot find attribute show-if')
+            const showIfArr = showIfAttribute.split('=');
+            const depended_element_id = showIfArr[0];
+            const depended_value = showIfArr[1];
+            const element_to_check = /** @type {HTMLInputElement */ (document.getElementById(depended_element_id));
+            if(!element_to_check) {
+                throw new Error('Cannot find element by ID ' + depended_element_id);
+            }
             
-            maybeHideField(field, element_to_check, required_value);
+            this.maybeHideField(field, element_to_check, depended_value);
             element_to_check.addEventListener('change', (e) => {
-                maybeHideField(field, e.target, required_value)
+                this.maybeHideField(field, /** @type { HTMLInputElement }*/ (e.target), depended_value)
             })
         }
 
+    }
+
+    //-- Methods --//
+
+    /**
+     * Hide a field with transition
+     * @param {HTMLElement} element field to hide
+     */
+    hideField(element) {
+        console.log('hiding')
+        element.style.height = "0px";
+        element.style.paddingBlock = "0px";
+
+        const input = element.querySelector('input');
+
+        if (input) input.required = false;
+        
+        setTimeout(() => {
+            element.classList.add('field-hidden');
+        }, field_hide_transition_length_s * 1000 + 20)
+    }
+
+    /**
+     * Hide field if its dependant field is not filled/checked
+     * 
+     * @param {HTMLElement} element Element to maybe hide
+     * @param {HTMLInputElement} depends_on Element on which the field's hidden state depends.
+     * @param {string} required_value (optional) Which value the depended input needs to have in order to display the element
+     */
+    maybeHideField(element, depends_on, required_value) {
+        if(depends_on.getAttribute('type') == 'checkbox') {
+            if(depends_on.checked) {
+                this.showField(element)
+            } else {
+                this.hideField(element);
+                // element.classList.add('field-hidden');
+                // element.style.height = '0px';
+                // element.style.display = 'none';
+            }
+        } else if(required_value) {
+            if(depends_on.value == required_value) {
+                this.showField(element);
+            } else {
+                this.hideField(element);
+            }
+            
+        }
+    }
+
+    /**
+     * Show a field with transition
+     * @param {HTMLElement} element field to show 
+     */
+    showField(element) {
+        const input = element.querySelector('input');
+
+        if(input && this.required_inputs.includes(input)) {
+            input.required = true;
+        }
+
+        element.classList.remove('field-hidden');
+        setTimeout(() => {
+            element.style.paddingBlock = 'var(--field-margin-y)'
+            element.style.height = element.scrollHeight + 'px';
+        }, 20)
     }
 }

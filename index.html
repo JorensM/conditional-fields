@@ -6,10 +6,10 @@
     </head>
     <body>
         <main>
-            <h1>Conditional Form</h1>
+            <h1>Conditional Fields</h1>
             <section>
                 <p>
-                    Conditional Form is a vanilla JS library that allows you to hide/show
+                    Conditional Fields is a vanilla JS library that allows you to hide/show
                     form fields conditionally depending on the value of some other field. 
                 </p>
                 <h2>Examples</h2>
@@ -19,7 +19,58 @@
                     </li>
                 </ul>
             </section>
-            
+            <section>
+                <h2>Setup</h2>
+                <p>
+                    To set up, simply download the <code>ConditionalFields.js</code> file and 
+                    include it in your project via <code>&lt;script&gt;</code> tag.
+                </p>
+                <h2>Usage</h2>
+                <p>
+                    To use the library, create an instance of <code>ConditionalFields</code> that was
+                    included when setting up. Make sure the instance is created <i>After</i>
+                    the elements have been added to the DOM.
+                </p>
+                <p>
+                    As the argument to the <code>ConditionalFields</code>, you 
+                    can pass a single optional options object with the following optional
+                    properties:
+                </p>
+                <ul>
+                    <li>
+                        <b>hideElementAnimation:</b> the CSS class that will be added
+                        to the element before it is hidden
+                    </li>
+                    <li>
+                        <b>hideAnimationDelay:</b> a delay in MS after which the element's
+                        <code>display</code> property will be set to <code>none</code>. This should
+                        be set to however long is your hiding CSS animation
+                    </li>
+                    <li>
+                        <b>showElementAnimation:</b> the CSS class that will be applied to
+                        the element after it has been shown.
+                    </li>
+                    <li>
+                        <b>displayValue:</b> the display value that should be applied to the
+                        elements when they're being shown, for example <code>block</code>, <code>flex</code>,
+                        etc.
+                    </li>
+                </ul>
+                <p>
+                    After this you can add a <code>show-if</code> attribute to 
+                    any element with the following syntax:
+                    <div class='snippet'>
+                        <code>[element_to_check]=[value_to_check]</code>
+                    </div>
+                    Where <code>element_to_check</code> is the ID of the element
+                    whose value should be checked, and <code>value_to_check</code>
+                    being the value to check for. Whenever the element's value changes
+                    to the specified value, the element with the <code>show-if</code>
+                    attribute will be shown. Otherwise it will be hidden.
+                    If <code>element_to_check</code> is a checkbox, then you can omit
+                    the 'equals' sign and anything after it.
+                </p>
+            </section>
         </main>
     </body>
 </html>

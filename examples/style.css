@@ -159,6 +159,15 @@ button[type='submit']:hover {
     color: var(--on-primary-dark);
 }
 
+/* Code */
+
+.snippet {
+    padding: 16px;
+    box-sizing: border-box;
+    background-color: rgb(232, 232, 232);
+    margin-bottom: 16px;
+}
+
 /*-- Responsive --*/
 
 /* sm */

@@ -22,25 +22,6 @@ conditional_fields.init({
     fadeInAnimation: 13
 }, );
 
-// Add event listeners to make form fields conditional and hide the ones that should be hidden
-for(let i = 0; i < conditional_elements.length; i++) {
-    const field = conditional_elements[i];
-    console.log(field);
-    const input = field.querySelector('input');
-    if(input && input.required) {
-        required_inputs.push(input);
-    }
-    const showIf = field.getAttribute('show-if').split('=');
-    const required_element_id = showIf[0];
-    const required_value = showIf[1];
-    const element_to_check = document.getElementById(required_element_id);
-    
-    maybeHideField(field, element_to_check, required_value);
-    element_to_check.addEventListener('change', (e) => {
-        maybeHideField(field, e.target, required_value)
-    })
-}
-
 // Add submit listener to form
 form.addEventListener('submit', handleSubmit);
 

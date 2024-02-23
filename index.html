@@ -1,62 +1,25 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel='stylesheet' href='style.css' />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel='stylesheet' href='examples/style.css' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
     </head>
     <body>
-        
-        <div class='container'>
-            <form id='form'>
-                <div class='field'>
-                    <label>Name</label>
-                    <input required/>
-                </div>
-                <div class='field'>
-                    <label>Email</label>
-                    <input id='email' type='email' required/>
-                </div>
-                <span class='secret field-hidden' show-if='email=secret@gmail.com'>
-                    You found the secret email!
-                </span>
-                <div class='checkbox-field'>
-                    <input id='checkbox-1' type='checkbox'>
-                    <label>Checkbox 1</label>
-                </div>
-                <div class='field field-hidden' show-if='checkbox-1'>
-                    <label>Conditional field</label>
-                    <input required/>
-                </div>
-                <div class='field fieldh-hidden'>
-                    <label>Dropdown</label>
-                    <select id='select'>
-                        <option value='1'>Option 1</option>
-                        <option value='2'>Option 2</option>
-                        <option value='3'>Option 3</option>
-                        <option value='4'>Option 4</option>
-                    </select>
-                </div>
-                
-                <div class='field field-hidden' show-if='select=1'>
-                    <label>Conditional field 1</label>
-                    <input/>
-                </div>
-                <div class='field field-hidden' show-if='select=2'>
-                    <label>Conditional field 2</label>
-                    <input/>
-                </div>
-                <div class='field field-hidden' show-if='select=3'>
-                    <label>Conditional field 3</label>
-                    <input/>
-                </div>
-                <button type='submit'>Submit</button>
-            </form>
-            <div role="alert" id='form-submitted' class='form-submitted' style='display: none'>
-                Thank you for sumbmitting the form
-            </div>
-        </div>
-
-        <script src='./ConditionalFields.js'></script>
-        <script src='./main.js'></script>
+        <main>
+            <h1>Conditional Form</h1>
+            <section>
+                <p>
+                    Conditional Form is a vanilla JS library that allows you to hide/show
+                    form fields conditionally depending on the value of some other field. 
+                </p>
+                <h2>Examples</h2>
+                <ul>
+                    <li>
+                        <a href='./examples/exampe1.html'>With default settings</a>
+                    </li>
+                </ul>
+            </section>
+            
+        </main>
     </body>
 </html>

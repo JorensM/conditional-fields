@@ -15,7 +15,10 @@
                 <h2>Examples</h2>
                 <ul>
                     <li>
-                        <a href='./examples/exampe1.html'>With default settings</a>
+                        <a href='./examples/example1.html'>With default settings</a>
+                    </li>
+                    <li>
+                        <a href='./examples/example2.html'>With custom animations</a>
                     </li>
                 </ul>
             </section>
@@ -62,11 +65,22 @@
                     <div class='snippet'>
                         <code>show-if="[element_to_check]=[value_to_check]"</code>
                     </div>
+                    
                     Where <code>element_to_check</code> is the ID of the element
                     whose value will be checked, and <code>value_to_check</code>
                     being the value to check for. Whenever the element's value changes
                     to the specified value, the element with the <code>show-if</code>
                     attribute will be shown. Otherwise it will be hidden.
+                </p>
+                <p>
+                    For example:
+                    <div class='snippet'>
+                        <code>&lt;div show-if="email=some@mail.com"&gt;&lt;/div&gt;</code>
+                    </div>
+                    Now whenever an input with ID <code>email</code> has its value set to
+                    <code>some@mail.com</code>, the div will be shown.
+                </p>
+                <p>
                     If <code>element_to_check</code> is a checkbox, then you can omit
                     the '=' sign and anything after it.
                 </p>

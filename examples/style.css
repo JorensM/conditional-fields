@@ -25,7 +25,7 @@
 
     /*-- Keyframes --*/
 
-    --fade-in-medium: 0.4s;
+    --slide-medium: 0.4s;
 }
 
 body, html {
@@ -94,6 +94,10 @@ form {
 
 /* Field */
 
+.field-wrapper {
+    overflow-x: hidden;
+}
+
 .field {
     padding-block: var(--field-margin-y);
     display: flex;
@@ -107,10 +111,6 @@ form {
     display: flex;
     align-items: center;
     gap: 4px;
-}
-
-.field-hidden {
-    display: none;
 }
 
 /* Input */
@@ -177,6 +177,40 @@ button[type='submit']:hover {
     background-color: rgb(232, 232, 232);
     margin-bottom: 16px;
 }
+
+/* Keyframes */
+
+.slide-from-left {
+ animation: var(--slide-medium) 1 normal slide-from-left;
+ animation-timing-function: ease-out;
+}
+
+@keyframes slide-from-left {
+
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+.slide-to-left {
+    animation: var(--slide-medium) 1 normal slide-to-left;
+    animation-timing-function: ease-out;
+   }
+   
+   @keyframes slide-to-left {
+   
+       from {
+           transform: translateX(0%);
+       }
+   
+       to {
+           transform: translateX(-100%);
+       }
+   }
 
 /*-- Responsive --*/
 

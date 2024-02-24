@@ -11,14 +11,36 @@ const form_submitted_element = document.getElementById('form-submitted')
 
 const root_element = /** @type { HTMLElement } */ (document.querySelector(':root'));
 
+/**
+ * @type {{[k: string]: ConditionalFieldsOptions}}
+ */
+const OPTIONS = {
+    EXAMPLE1: {
+        displayValue: 'flex'
+    },
+    EXAMPLE2: {
+        displayValue: 'flex',
+        showElementAnimation: 'slide-from-left',
+        hideElementAnimation: 'slide-to-left'
+    }
+}
+
+let options_to_use = null;
+
+const current_url = window.location.pathname;
+
+if(current_url.endsWith('example1.html')) {
+    options_to_use = OPTIONS.EXAMPLE1;
+} else if(current_url.endsWith('example2.html')) {
+    options_to_use = OPTIONS.EXAMPLE2;
+}
+
 //-- Initialization --//
 
 root_element.style.setProperty('--field-hide-transition-length', field_hide_transition_length_s + 's');
 root_element.style.setProperty('--fade-in-medium', fade_in_medium_length_s + 's')
 
-const conditional_fields = new ConditionalFields({
-    displayValue: 'flex'
-}, );
+const conditional_fields = new ConditionalFields(/** @type {!ConditionalFieldsOptions} */ (options_to_use));
 
 // Add submit listener to form
 form.addEventListener('submit', handleSubmit);

@@ -9,7 +9,15 @@
  */
 
 /**
- * @type { ConditionalFieldsOptions }
+ * @typedef { Object } ElementOptions
+ * @property { string | undefined } paddingBlock
+ * @property { boolean } required
+ * @property { boolean } animatePadding
+ * @property { boolean } animateHeight
+ *
+*/
+/**
+ * @type { Required<ConditionalFieldsOptions> }
  */
 const default_options = {
     hideElementAnimation: 'fade-out',
@@ -30,7 +38,7 @@ class ConditionalFields {
     root_element;
 
     /**
-     * @type { ConditionalFieldsOptions } Options
+     * @type { Required<ConditionalFieldsOptions> } Options
      */
     options;
 
@@ -44,16 +52,35 @@ class ConditionalFields {
      * @type { HTMLElement[] }
      * List of inputs that are required
      */
-    required_inputs = [];
+    // required_inputs = [];
+
+    /**
+     * @type {Map<HTMLElement, string>}
+     * List of element paddings
+     */
+    // element_paddings = new Map();
+
+    /** 
+     * @type {Map<HTMLElement, ElementOptions>}
+     */
+    element_options = new Map();
     
     /**
      *  @param { ConditionalFieldsOptions } options
      */
     constructor(options) {
         this.options = {
-            ...default_options,
-            ...options
+            ...default_options
         }
+
+        for(const option_key in this.options) {
+            const key_typed = /** @type {keyof ConditionalFieldsOptions} */ (option_key);
+            if(options[key_typed]) {
+                /** @type { ConditionalFieldsOptions[key_typed] } */ 
+                (this.options[key_typed]) = (options[key_typed])
+            }
+        }
+
         this.root_element = /** @type { HTMLElement } */ (document.querySelector(':root'));
         this.conditional_elements = document.body.querySelectorAll('[show-if]');
 
@@ -62,8 +89,19 @@ class ConditionalFields {
             const field = this.conditional_elements[i];
             const input = field.querySelector('input');
             if(input && input.required) {
-                this.required_inputs.push(input);
+                this.setElementOption(field, "required", true);
             }
+            let animatePadding = true;
+            let animateHeight = true;
+            if(field.getAttribute('cf-animate-padding') == "false") {
+                animatePadding = false;
+            }
+            if(field.getAttribute('cf-animate-height') == "false") {
+                animateHeight = false;
+            }
+            this.setElementOption(field, 'animateHeight', animateHeight);
+            this.setElementOption(field, 'animatePadding', animatePadding)
+            this.setElementOption(field, "paddingBlock", field.style.paddingBlock);
             const showIfAttribute = field.getAttribute('show-if');
             if (!showIfAttribute) throw new Error('Cannot find attribute show-if')
             const showIfArr = showIfAttribute.split('=');
@@ -85,17 +123,37 @@ class ConditionalFields {
     //-- Methods --//
 
     /**
+     * 
+     * @param { HTMLElement } element
+     * @param { keyof ElementOptions } option_key
+     * @param { any } value
+     */
+    setElementOption(element, option_key, value) {
+        this.element_options.set(element, {
+            .../** @type { ElementOptions } */(this.element_options.get(element)),
+            [option_key]: value
+        })
+    }
+
+    /**
      * Hide a field with transition
      * @param {HTMLElement} element field to hide
      */
     hideField(element) {
-        console.log('hiding')
-        element.style.height = "0px";
-        element.style.paddingBlock = "0px";
+        const element_options = this.element_options.get(element)
+        if(element_options?.animateHeight) {
+            element.style.height = "0px";
+        }
+        
+        if(element_options?.animatePadding) {
+            element.style.paddingBlock = "0px";
+        }
 
         const input = element.querySelector('input');
 
         if (input) input.required = false;
+
+        element.classList.add(this.options.hideElementAnimation)
         
         setTimeout(() => {
             element.classList.add('field-hidden');
@@ -136,14 +194,23 @@ class ConditionalFields {
     showField(element) {
         const input = element.querySelector('input');
 
-        if(input && this.required_inputs.includes(input)) {
+        if(input && this.element_options.get(element)?.required) {
             input.required = true;
         }
 
+        const element_options = this.element_options.get(element);
+
         element.classList.remove('field-hidden');
+        element.classList.remove(this.options.hideElementAnimation)
         setTimeout(() => {
-            element.style.paddingBlock = 'var(--field-margin-y)'
-            element.style.height = element.scrollHeight + 'px';
+            element.classList.add(this.options.showElementAnimation)
+            if(element_options?.animatePadding) {
+                element.style.paddingBlock = /** @type { string } */ (this.element_options.get(element)?.paddingBlock);
+            }
+            if(element_options?.animateHeight) {
+                element.style.height = element.scrollHeight + 'px';
+            }
+            
         }, 20)
     }
 }

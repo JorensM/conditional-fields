@@ -28,11 +28,13 @@
                     <input id='checkbox-1' type='checkbox'>
                     <label>Checkbox 1</label>
                 </div>
-                <div class='field field-hidden' show-if='checkbox-1'>
-                    <label>Conditional field</label>
-                    <input required/>
+                <div class='field-wrapper'>
+                    <div class='field field-hidden' show-if='checkbox-1'>
+                        <label>Conditional field</label>
+                        <input required/>
+                    </div>
                 </div>
-                <div class='field fieldh-hidden'>
+                <div class='field'>
                     <label>Dropdown</label>
                     <select id='select'>
                         <option value='1'>Option 1</option>
@@ -42,17 +44,35 @@
                     </select>
                 </div>
                 
-                <div class='field field-hidden' show-if='select=1'>
-                    <label>Conditional field 1</label>
-                    <input/>
-                </div>
-                <div class='field field-hidden' show-if='select=2'>
-                    <label>Conditional field 2</label>
-                    <input/>
-                </div>
-                <div class='field field-hidden' show-if='select=3'>
-                    <label>Conditional field 3</label>
-                    <input/>
+                <div class='field-wrapper'>
+                    <div 
+                        class='field field-hidden' 
+                        show-if='select=1' 
+                    >
+                        <label>Conditional field 1</label>
+                        <input/>
+                    </div>
+                    <div 
+                        class='field field-hidden' 
+                        show-if='select=2' 
+                    >
+                        <label>Conditional field 2</label>
+                        <input/>
+                    </div>
+                    <div 
+                        class='field field-hidden' 
+                        show-if='select=3' 
+                    >
+                        <label>Conditional field 3</label>
+                        <input/>
+                    </div>
+                    <div 
+                        class='field field-hidden' 
+                        show-if='select=4' 
+                    >
+                        <label>Conditional field 4</label>
+                        <input/>
+                    </div>
                 </div>
                 <button type='submit'>Submit</button>
             </form>

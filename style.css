@@ -1,3 +1,16 @@
+:root {
+    /*-- Keyframes --*/
+
+    --fade-in-medium: 0.4s;
+    --expand-medium: 0.4s;
+}
+
+/* Util */
+
+.field-hidden {
+    display: none;
+}
+
 /*-- Keyframes --*/
 
 .fade-in {

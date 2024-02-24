@@ -179,8 +179,12 @@ class ConditionalFields {
             }
         } else if(required_value) {
             if(depends_on.value == required_value) {
+                console.log('showing: ', element);
+                console.log(depends_on.value);
+                console.log(required_value);
                 this.showField(element);
             } else {
+                console.log('hiding: ', element);
                 this.hideField(element);
             }
             
